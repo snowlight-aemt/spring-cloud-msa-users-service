@@ -2,12 +2,13 @@ package me.snowlight.springcloudusers.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.bouncycastle.jcajce.provider.keystore.BC;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,15 @@ public class UsersServiceImpl implements UserService {
         userDto.setOrders(orders);
 
         return userDto;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username).
+                                        orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPwd(), 
+                            true, true, true, true, new ArrayList<>());
     }
     
 }
