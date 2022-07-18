@@ -31,8 +31,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         // http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
-                    .hasIpAddress("192.168.0.5")
-                    .and().addFilter(getAuthentionFilter());
+            .hasIpAddress("192.168.0.5")
+            .and().addFilter(getAuthentionFilter());
         http.headers().frameOptions().disable();
     }
 
@@ -41,6 +41,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         authenticationFilter.setAuthenticationManager(authenticationManager());
         return authenticationFilter;
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

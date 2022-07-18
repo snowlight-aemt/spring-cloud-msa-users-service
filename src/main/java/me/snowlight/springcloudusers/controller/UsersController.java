@@ -23,7 +23,7 @@ import me.snowlight.springcloudusers.service.UserService;
 
 @Slf4j
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class UsersController {
     private final Greeting greeting;

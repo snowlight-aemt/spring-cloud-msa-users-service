@@ -35,11 +35,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    // @Override
-    // protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-    //         Authentication authResult) throws IOException, ServletException {
-    //     // 성공 후 처리
-    //     // 권한 추가
-    // }
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+            Authentication authResult) throws IOException, ServletException {
+        // 성공 후 처리
+        // 권한 추가
+        		// super.successfulAuthentication(request, response, chain, authResult); // 주석 또는 삭제 필수
+	}
     
 }
