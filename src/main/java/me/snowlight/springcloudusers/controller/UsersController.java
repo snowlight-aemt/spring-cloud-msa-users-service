@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ import me.snowlight.springcloudusers.service.UserService;
 public class UsersController {
     private final Greeting greeting;
     private final UserService userService;
+    private final Environment environment;
 
     @GetMapping("/users")
     public ResponseEntity<List<ResponseUser>> getAllUsers() {
@@ -62,7 +64,11 @@ public class UsersController {
 
     @GetMapping("/health_check")
     public String status(HttpServletRequest request) {
-        return String.format("it's Working in User SErvice on port %s", request.getServerPort());
+        return String.format("it's Working in User SErvice on port " + request.getServerPort()
+                            + ", port (local.server.port)=" + environment.getProperty("local.server.port")
+                            + ", port (server.port)= "+ environment.getProperty("server.port")
+                            + ", with token secret= "+ environment.getProperty("token.secret")
+                            + ", with token time= "+ environment.getProperty("token.expiration_time"));
     }
 
     @GetMapping("/welcome")
