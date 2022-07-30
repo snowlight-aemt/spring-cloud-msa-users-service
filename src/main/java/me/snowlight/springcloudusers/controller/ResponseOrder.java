@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class ResponseeOrder {
+public class ResponseOrder {
     private String productId;
     private Integer qty;
     private Integer unitPrice;

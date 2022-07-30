@@ -1,12 +1,13 @@
 package me.snowlight.springcloudusers.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.snowlight.springcloudusers.controller.ResponseeOrder;
+import me.snowlight.springcloudusers.controller.ResponseOrder;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +21,5 @@ public class UserDto {
 
     private String encryptedPwd;
 
-    private List<ResponseeOrder> orders;
+    private List<ResponseOrder> orders = new ArrayList<>();
 }

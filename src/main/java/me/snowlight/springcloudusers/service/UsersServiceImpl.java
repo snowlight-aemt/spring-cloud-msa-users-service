@@ -6,14 +6,20 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
-import me.snowlight.springcloudusers.controller.ResponseeOrder;
+import me.snowlight.springcloudusers.controller.ResponseOrder;
 import me.snowlight.springcloudusers.model.UserEntity;
 import me.snowlight.springcloudusers.model.UserRepository;
 
@@ -23,6 +29,10 @@ public class UsersServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final RestTemplate restTemplate;
+
+    private final Environment env;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -54,9 +64,13 @@ public class UsersServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new);
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
-        List<ResponseeOrder> orders = new ArrayList<>();
-        userDto.setOrders(orders);
+        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+        ResponseEntity<List<ResponseOrder>> response = restTemplate.exchange(orderUrl,
+                                HttpMethod.GET,
+                                null,
+                                new ParameterizedTypeReference<List<ResponseOrder>>() {});
 
+        userDto.setOrders(response.getBody());
         return userDto;
     }
 
