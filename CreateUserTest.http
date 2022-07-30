@@ -17,22 +17,22 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/user-service/users/194dced3-629d-4a2e-9cab-b81ea8636d36
-Authorization: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyNDliMWVjMC01MDY2LTQ5N2YtYWU3Ny1hYzNkM2VkMTVjOWYiLCJleHAiOjE2NjAwMzQxNDR9.jbaV0cPVL5HWvQu3qK34s-6F31oJIvWjjL4NvQebN6OPFjBSVA6ucRzuN3_14JeCxAWr5ccTQCYs5aIpzEgv8Q
+GET http://localhost:8000/user-service/users/de77062c-8fb3-42b7-a4ef-1c9eb29757eb
+Authorization: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkZTc3MDYyYy04ZmIzLTQyYjctYTRlZi0xYzllYjI5NzU3ZWIiLCJleHAiOjE2NjAwNDIyNzZ9.1WcX3ij-z_xhqN7cEOfhea2cjdF3KCyf6zu2r5mUfnr64nUQtvczskQOyai4g0ATOxIYOe2khICjK33JCuZ_Bg
 
 ###
 GET http://localhost:8000/order-service/health_check
 ###
-POST http://localhost:8000/order-service/194dced3-629d-4a2e-9cab-b81ea8636d36/orders
+POST http://localhost:8000/order-service/de77062c-8fb3-42b7-a4ef-1c9eb29757eb/orders
 Content-Type: application/json
 
 {
-    "productId": "PRO_14",
+    "productId": "PRO_22",
     "qty": 50,
     "unitPrice": 20000
 }
 ###
-GET http://localhost:8000/order-service/194dced3-629d-4a2e-9cab-b81ea8636d36/orders
+GET http://localhost:8000/order-service/de77062c-8fb3-42b7-a4ef-1c9eb29757eb/orders
 
 
 ###

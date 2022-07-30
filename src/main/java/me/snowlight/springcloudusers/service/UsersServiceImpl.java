@@ -18,11 +18,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.snowlight.springcloudusers.controller.ResponseOrder;
+import me.snowlight.springcloudusers.error.FeignErrorDecoder;
 import me.snowlight.springcloudusers.model.UserEntity;
 import me.snowlight.springcloudusers.model.UserRepository;
+import me.snowlight.springcloudusers.model.repository.OrderServiceClient;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UsersServiceImpl implements UserService {
@@ -30,9 +35,7 @@ public class UsersServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final RestTemplate restTemplate;
-
-    private final Environment env;
+    private final OrderServiceClient orderServiceClient;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -64,13 +67,15 @@ public class UsersServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new);
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
-        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
-        ResponseEntity<List<ResponseOrder>> response = restTemplate.exchange(orderUrl,
-                                HttpMethod.GET,
-                                null,
-                                new ParameterizedTypeReference<List<ResponseOrder>>() {});
+        // List<ResponseOrder> orders = new ArrayList<>();
+        // try {
+        //     orders = orderServiceClient.getOrders(userId);    
+        // } catch (FeignException e) {
+        //     log.error(e.getMessage(), e);
+        // }
+        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
 
-        userDto.setOrders(response.getBody());
+        userDto.setOrders(orders);
         return userDto;
     }
 
