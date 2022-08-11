@@ -49,4 +49,5 @@ management:
 
 logging:
   level:
+    root: DEBUG
     com.example.userservice.client: DEBUG

@@ -6,23 +6,17 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.snowlight.springcloudusers.controller.ResponseOrder;
-import me.snowlight.springcloudusers.error.FeignErrorDecoder;
 import me.snowlight.springcloudusers.model.UserEntity;
 import me.snowlight.springcloudusers.model.UserRepository;
 import me.snowlight.springcloudusers.model.repository.OrderServiceClient;
@@ -36,6 +30,8 @@ public class UsersServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final OrderServiceClient orderServiceClient;
+
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -67,13 +63,9 @@ public class UsersServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new);
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
-        // List<ResponseOrder> orders = new ArrayList<>();
-        // try {
-        //     orders = orderServiceClient.getOrders(userId);    
-        // } catch (FeignException e) {
-        //     log.error(e.getMessage(), e);
-        // }
-        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> orders = circuitBreaker.run(() -> orderServiceClient.getOrders(userId), 
+            throwable -> new ArrayList<>());
 
         userDto.setOrders(orders);
         return userDto;
