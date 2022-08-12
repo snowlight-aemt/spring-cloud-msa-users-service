@@ -17,8 +17,8 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/user-service/users/af6c78bc-d444-4129-83be-d87fb3229d18
-Authorization: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZjZjNzhiYy1kNDQ0LTQxMjktODNiZS1kODdmYjMyMjlkMTgiLCJleHAiOjE2NjA5OTc2ODl9.NgPSg4F47JS2EoxNi8ax4hlVR96R2wxmwdqnhIVJymjEZ7WnOwRIa9ZOJGs_Udsnz2xLCvN8BQNiz1egfeERzQ
+GET http://localhost:8000/user-service/users/bf0d0b68-eb4f-4830-9ea7-9697a0a64d6f
+Authorization: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiZjBkMGI2OC1lYjRmLTQ4MzAtOWVhNy05Njk3YTBhNjRkNmYiLCJleHAiOjE2NjEwODczNTB9.IMfhIOjfjonCA3-DLURGM72fp7dUL0dHDdwFUyoJAXf015NX7QSvL1Mdr4ZPK0BMiS1c1eHckrkfB10ZJLwxMA
 
 ###
 GET http://localhost:8000/order-service/health_check
@@ -27,16 +27,16 @@ GET http://localhost:8000/order-service/health_check
 GET http://localhost:8000/catalog-service/catalogs
 
 ###
-POST http://localhost:8000/order-service/af6c78bc-d444-4129-83be-d87fb3229d18/orders
+POST http://localhost:8000/order-service/10193548-79c8-4793-9933-823416225100/orders
 Content-Type: application/json
 
 {
     "productId": "catalog-0002",
-    "qty": 50,
+    "qty": 20,
     "unitPrice": 900
 }
 ###
-GET http://localhost:8000/order-service/af6c78bc-d444-4129-83be-d87fb3229d18/orders
+GET http://localhost:8000/order-service/bf0d0b68-eb4f-4830-9ea7-9697a0a64d6f/orders
 
 
 ###

@@ -13,6 +13,12 @@ spring:
       - 192.168.0
   application:
     name: user-service
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
   h2:
     console:
       enabled: true
@@ -49,5 +55,5 @@ management:
 
 logging:
   level:
-    root: DEBUG
+    # root: DEBUG
     com.example.userservice.client: DEBUG

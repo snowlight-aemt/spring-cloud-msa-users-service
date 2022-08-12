@@ -63,9 +63,11 @@ public class UsersServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(IllegalArgumentException::new);
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
+        log.info("Before call orders microservice");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
         List<ResponseOrder> orders = circuitBreaker.run(() -> orderServiceClient.getOrders(userId), 
             throwable -> new ArrayList<>());
+        log.info("after call orders microservice");
 
         userDto.setOrders(orders);
         return userDto;
