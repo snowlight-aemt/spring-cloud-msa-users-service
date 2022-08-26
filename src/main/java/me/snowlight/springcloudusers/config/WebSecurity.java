@@ -33,10 +33,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
-            .hasIpAddress("192.168.0.5")
+        // .hasIpAddress("0.0.0.0")
+            .access("hasIpAddress('0.0.0.0/0')")
             .and().addFilter(getAuthentionFilter());
         http.headers().frameOptions().disable();
     }
+
+    // http.authorizeRequests().antMatchers("/**")
+    // .access("hasIpAddress('" + IP_ADDRESS + "')")             //  IP_ADDRESS="x.x.x.x"
+    // .and()
+    // .addFilter(getAuthenticationFilter());
 
     private AuthenticationFilter getAuthentionFilter() throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService, env);
