@@ -47,7 +47,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh,health,beans,httptrace,busrefresh
+        include: refresh,health,beans,httptrace,busrefresh,info,prometheus,metrics
 
 # token:
 #   expiration_time: 86400000

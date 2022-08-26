@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.snowlight.springcloudusers.service.UserDto;
@@ -63,6 +64,7 @@ public class UsersController {
     }
 
     @GetMapping("/health_check")
+    @Timed(value = "users.status", longTask = true)
     public String status(HttpServletRequest request) {
         return String.format("it's Working in User SErvice on port " + request.getServerPort()
                             + ", port (local.server.port)=" + environment.getProperty("local.server.port")
@@ -72,6 +74,7 @@ public class UsersController {
     }
 
     @GetMapping("/welcome")
+    @Timed(value = "users.welcome", longTask = true)
     public String welcome() {
         return greeting.getMessage();
     }
